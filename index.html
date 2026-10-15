@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reasoning Desk</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#101828;--mut:#667085;--line:#e3e8ee;--acc:#3b4cca;--acc2:#e7eafc;--on:#fff;--ok:#12805c;--okb:#dcf5ea;--bad:#c0362c;--badb:#fde4e1;--gold:#e0a100;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1116;--card:#171b22;--ink:#eef1f6;--mut:#98a2b3;--line:#2a313c;--acc:#8b9bff;--acc2:#222a52;--on:#0e1116;--ok:#4fd1a1;--okb:#11352a;--bad:#ff8b80;--badb:#3d1b18;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1116;--card:#171b22;--ink:#eef1f6;--mut:#98a2b3;--line:#2a313c;--acc:#8b9bff;--acc2:#222a52;--on:#0e1116;--ok:#4fd1a1;--okb:#11352a;--bad:#ff8b80;--badb:#3d1b18;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:500 15px/1.5 Figtree,system-ui,sans-serif;min-height:100vh}
+#app{max-width:520px;margin:0 auto;padding:18px 16px 48px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.hd,h2{font-family:'Bricolage Grotesque',Figtree,sans-serif}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800}
+.mark{width:34px;height:34px;border-radius:11px;background:var(--acc);color:var(--on);display:grid;place-items:center}
+.mark svg{width:22px;height:22px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:3px 12px;font-weight:600;font-size:14px;min-width:54px;text-align:center}
+.ib{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center}
+.ib svg{width:20px;height:20px}
+.t{font-size:18px;font-weight:700;flex:1;text-align:center}
+.lead{color:var(--mut);margin:8px 0 4px}
+h2{font-size:14px;font-weight:600;color:var(--mut);margin:24px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{position:relative;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:2px;transition:transform .12s}
+.tile:active,.lv:active,.opt:active{transform:scale(.97)}
+.ico{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;margin-bottom:10px;background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c)}
+.ico svg{width:25px;height:25px}
+.tt{font:700 15px/1.2 'Bricolage Grotesque',sans-serif}
+.ss{font-size:12.5px;color:var(--mut)}
+.pg{position:absolute;top:14px;right:14px;font-size:12px;color:var(--mut)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--line);padding:4px;border-radius:14px;margin-top:16px}
+.seg button{border:0;background:none;border-radius:10px;padding:9px;font-weight:600;color:var(--mut)}
+.seg .on{background:var(--card);color:var(--ink)}
+.lvs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.lv{aspect-ratio:1;border-radius:16px;border:1px solid var(--line);background:var(--card);display:grid;place-content:center;justify-items:center;font:700 18px 'Bricolage Grotesque',sans-serif}
+.lv small{font:400 10px/1 Figtree;color:var(--gold);letter-spacing:1px;margin-top:3px;height:10px}
+.lv:disabled{opacity:.4;cursor:default}
+.lv svg{width:18px;height:18px;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-top:12px}
+.lab{font-size:12.5px;color:var(--mut);font-weight:600;margin-bottom:4px}
+.clue{display:flex;gap:10px;padding:5px 0}
+.clue:before{content:'';flex:none;width:6px;height:6px;border-radius:50%;background:var(--c);margin-top:9px}
+.q{font-weight:600;margin-bottom:2px}
+.opt{display:block;width:100%;text-align:left;padding:11px 14px;margin-top:8px;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.opt.sel{border-color:var(--acc);background:var(--acc2)}
+.opt.ok{border-color:var(--ok);background:var(--okb)}
+.opt.no{border-color:var(--bad);background:var(--badb)}
+.opt.off{opacity:.3;text-decoration:line-through}
+.btn{display:block;width:100%;margin-top:14px;padding:14px;border-radius:14px;border:0;background:var(--acc);color:var(--on);font:700 16px Figtree,sans-serif}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.pad{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-width:62px;padding:5px 8px;border:1px dashed var(--line);border-radius:10px;background:none;text-align:center;line-height:1.2}
+.chip small{display:block;font-size:10.5px;color:var(--mut)}
+.chip b{display:block;min-height:19px;color:var(--c)}
+.row{display:flex;gap:8px;margin-top:12px}.row .btn{margin:0}
+.stars{color:var(--gold);font-size:26px;letter-spacing:3px}
+details{margin-top:10px;color:var(--mut);font-size:14px}summary{cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div id="app"></div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+const LET='PQRSTUVW'.split(''),COL=['Red','Blue','Green','Yellow','Pink','Black','White','Orange'],
+DAY=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+MON=['January','February','March','April','May','June','July','August','September','October','November','December'],
+DES=['Clerk','PO','Manager','AGM','GM','ED','MD'],CITY=['Delhi','Pune','Jaipur','Kochi','Patna','Surat','Bhopal','Indore'],
+JOB=['Doctor','Lawyer','Pilot','Chef','Teacher','Banker','Writer'],DN=['Easy','Medium','Hard'],
+DS=['Direct clues on a small puzzle. Good for learning each pattern.','Gaps, neighbours and parity clues. Closer to Prelims.','Bigger puzzles with indirect clues. Closer to Mains.'];
+const I={
+line:'<path d="M3 18h18"/><circle cx="5" cy="11" r="1.9"/><circle cx="10" cy="11" r="1.9"/><circle cx="14.5" cy="11" r="1.9"/><circle cx="19" cy="11" r="1.9"/>',
+ring:'<circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="4.5" r="1.8"/><circle cx="19.5" cy="12" r="1.8"/><circle cx="12" cy="19.5" r="1.8"/><circle cx="4.5" cy="12" r="1.8"/>',
+sq:'<rect x="6" y="6" width="12" height="12" rx="1"/><circle cx="6" cy="6" r="1.8"/><circle cx="18" cy="6" r="1.8"/><circle cx="6" cy="18" r="1.8"/><circle cx="18" cy="18" r="1.8"/><circle cx="12" cy="6" r="1.2"/><circle cx="12" cy="18" r="1.2"/><circle cx="6" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/>',
+hex:'<path d="M12 3.5l7.4 4.25v8.5L12 20.5l-7.4-4.25v-8.5z"/><circle cx="12" cy="3.5" r="1.7"/><circle cx="19.4" cy="16.25" r="1.7"/><circle cx="4.6" cy="16.25" r="1.7"/>',
+floor:'<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2M11 21v-3h2v3"/>',
+box:'<rect x="5" y="15" width="14" height="5" rx="1"/><rect x="6.5" y="9.5" width="11" height="5" rx="1"/><rect x="8" y="4" width="8" height="5" rx="1"/>',
+mon:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/><circle cx="9" cy="14.5" r=".7"/><circle cx="12" cy="14.5" r=".7"/><circle cx="15" cy="14.5" r=".7"/>',
+day:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M7.5 13h9M7.5 16.5h5"/>',
+yr:'<path d="M4 20h16M6 20v-6h12v6M6 17c2 1.5 4-1.5 6 0s4 1.5 6 0M12 14v-4M12 7v1"/>',
+des:'<rect x="8.5" y="3" width="7" height="5" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/><rect x="14" y="16" width="7" height="5" rx="1"/><path d="M12 8v4M6.5 16v-4h11v4"/>',
+tab:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9.5h16M4 14.5h16M9.5 4v16M14.5 4v16"/>',
+ord:'<path d="M3 21h18M6 18v-4M10.5 18v-8M15 18v-11M19.5 18V4"/>',
+back:'<path d="M15 5l-7 7 7 7"/>',lock:'<rect x="6" y="11" width="12" height="9" rx="2"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/>',
+bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.3 1 2.1h5c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'};
+const ic=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[k]}</svg>`;
+const CATS=[['Seating arrangement','#4457e0'],['Building and stacks','#0e8f86'],['Scheduling and calendar','#b7791f'],['Classification and variables','#d6336c']];
+const GAMES=[
+{id:'seat',c:0,n:'Linear row',s:'Facing north',i:'line'},{id:'circ',c:0,n:'Circular table',s:'Centre or outward',i:'ring'},
+{id:'sq',c:0,n:'Square table',s:'Corners and sides',i:'sq'},{id:'hex',c:0,n:'Triangle and hexagon',s:'Mixed facings',i:'hex'},
+{id:'floor',c:1,n:'Floors',s:'Who lives where',i:'floor'},{id:'box',c:1,n:'Box stack',s:'Colours, bottom to top',i:'box'},
+{id:'mon',c:2,n:'Months',s:'Birthdays and events',i:'mon'},{id:'day',c:2,n:'Weekdays',s:'Monday to Sunday',i:'day'},
+{id:'yr',c:2,n:'Years and ages',s:'Birth years',i:'yr'},{id:'des',c:3,n:'Designations',s:'Clerk up to MD',i:'des'},
+{id:'tab',c:3,n:'Grid puzzles',s:'City and profession',i:'tab'},{id:'ord',c:3,n:'Ordering',s:'Rank by inequality',i:'ord'}];
+/* ---------- engine ---------- */
+let prog={};try{prog=JSON.parse(localStorage.getItem('rd1')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('rd1',JSON.stringify(prog))}catch(e){}};
+function rng(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}let a=h>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=(R,a)=>a[Math.floor(R()*a.length)],shuf=(R,a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a},rg=n=>[...Array(n).keys()];
+const PC={},perms=n=>PC[n]||(PC[n]=(()=>{const r=[],a=rg(n);(function f(k){if(k==n){r.push(a.slice());return}for(let i=k;i<n;i++){[a[k],a[i]]=[a[i],a[k]];f(k+1);[a[k],a[i]]=[a[i],a[k]]}})(0);return r})());
+const cart=n=>{const r=[],p=perms(n);for(const x of p)for(const y of p)r.push([x,y]);return r};
+const ord=k=>k+(k%100>10&&k%100<14?'th':['th','st','nd','rd'][k%10<4?k%10:0]);
+const sz=(d,l,b,m)=>Math.min(m,b+d+(l>10?1:0));
+const lst=n=>`${LET[0]} to ${LET[n-1]}`;
+const lv=(o,w)=>({vb:w.vb,lo:w.lo,hi:w.hi,il:w.il,ih:w.ih,top:w.top,bot:w.bot,unit:w.unit,at:w.at,par:w.par,qa:w.qa,qw:w.qw,wh:w.wh});
+const par=(verb,noun)=>o=>`${verb} an ${o?'odd':'even'}-numbered ${noun}`;
+const SP={
+seat:(d,l)=>{const n=sz(d,l,5,8);return{k:'line',n,it:LET.slice(0,n),sl:i=>'Seat '+(i+1),v:{vb:'sits',lo:'to the left of',hi:'to the right of',il:'to the immediate left of',ih:'to the immediate right of',top:'at the extreme right end',bot:'at the extreme left end',unit:'persons',at:s=>'sits in '+s.toLowerCase(),par:par('sits at','seat'),qa:A=>`Which seat does ${A} occupy?`,qw:s=>`Who occupies ${s.toLowerCase()}?`},intro:`${n} persons (${lst(n)}) sit in a row facing North. Seats are numbered 1 to ${n} from left to right.`}},
+floor:(d,l)=>{const n=sz(d,l,5,8);return{k:'line',n,it:LET.slice(0,n),sl:i=>'Floor '+(i+1),v:{vb:'lives',lo:'below',hi:'above',il:'immediately below',ih:'immediately above',top:'on the topmost floor',bot:'on the ground floor',unit:'floors',at:s=>'lives on '+s.toLowerCase(),par:par('lives on','floor'),qa:A=>`On which floor does ${A} live?`,qw:s=>`Who lives on ${s.toLowerCase()}?`},intro:`A ${n}-storey building has floors numbered 1 (ground) to ${n} (top). ${n} persons (${lst(n)}) live one on each floor.`}},
+box:(d,l)=>{const n=sz(d,l,5,8);return{k:'line',n,it:COL.slice(0,n).map(c=>c+' box'),sl:i=>'Position '+(i+1),v:{vb:'is placed',lo:'below',hi:'above',il:'immediately below',ih:'immediately above',top:'at the top',bot:'at the bottom',unit:'boxes',at:s=>'is placed at '+s.toLowerCase(),par:par('is placed at','position'),wh:'Which box',qa:A=>`At which position (from the bottom) is the ${A} placed?`,qw:s=>`Which box is placed at ${s.toLowerCase()}?`},intro:`${n} boxes (${COL.slice(0,n).join(', ')}) are stacked one above another. Positions are numbered 1 (bottom) to ${n} (top).`}},
+mon:(d,l,R)=>{const n=sz(d,l,5,8),s0=Math.floor(R()*(13-n));return{k:'line',n,it:LET.slice(0,n),sl:i=>MON[s0+i],v:{vb:'has a birthday',lo:'in an earlier month than',hi:'in a later month than',il:'one month before',ih:'one month after',top:'in '+MON[s0+n-1],bot:'in '+MON[s0],unit:'months',at:s=>'has a birthday in '+s,qa:A=>`In which month is the birthday of ${A}?`,qw:s=>`Who has a birthday in ${s}?`},intro:`${n} persons (${lst(n)}) have birthdays in different months, one each, from ${MON[s0]} to ${MON[s0+n-1]}.`}},
+day:(d,l)=>{const n=sz(d,l,5,7);return{k:'line',n,it:LET.slice(0,n),sl:i=>DAY[i],v:{vb:'visits the bank',lo:'before',hi:'after',il:'one day before',ih:'one day after',top:'on '+DAY[n-1],bot:'on Monday',unit:'days',at:s=>'visits the bank on '+s,qa:A=>`On which day does ${A} visit the bank?`,qw:s=>`Who visits the bank on ${s}?`},intro:`${n} persons (${lst(n)}) each visit a bank on a different day, from Monday to ${DAY[n-1]}.`}},
+yr:(d,l,R)=>{const n=sz(d,l,5,7),vals=[];let y=1975+Math.floor(R()*12);for(let i=0;i<n;i++){vals.push(y);y+=2+Math.floor(R()*4)}return{k:'line',n,vals,it:LET.slice(0,n),sl:i=>String(vals[i]),ql:i=>(2026-vals[i])+' years',v:{vb:'is',lo:'older than',hi:'younger than',il:'just older than',ih:'just younger than',top:'the youngest',bot:'the eldest',unit:'persons',at:s=>'was born in '+s,qa:A=>`What is the age of ${A} in 2026?`,qw:s=>`Who was born in ${s}?`},intro:`${n} persons (${lst(n)}) were born in different years: ${vals.join(', ')}. Take 2026 as the base year for ages.`}},
+des:(d,l)=>{const n=sz(d,l,4,7),ds=DES.slice(7-n);return{k:'line',n,it:LET.slice(0,n),sl:i=>ds[i],v:{vb:'is',lo:'junior to',hi:'senior to',il:'immediately junior to',ih:'immediately senior to',top:'the senior-most',bot:'the junior-most',unit:'officers',at:s=>'is the '+s,qa:A=>`What is the designation of ${A}?`,qw:s=>`Who is the ${s}?`},intro:`${n} officers (${lst(n)}) hold different designations. In increasing order of seniority: ${ds.join(', ')}.`}},
+ord:(d,l,R)=>{const n=sz(d,l,5,7),a=R()<.5?['shorter than','taller than','the tallest','the shortest','height']:['lighter than','heavier than','the heaviest','the lightest','weight'];return{k:'line',n,it:LET.slice(0,n),sl:i=>i==n-1?a[2]:i==0?a[3]:`the ${ord(n-i)} ${a[2].slice(4)}`,v:{vb:'is',lo:a[0],hi:a[1],il:'just '+a[0],ih:'just '+a[1],top:a[2],bot:a[3],unit:'persons',at:s=>'is '+s,qa:A=>`Where does ${A} stand in order of ${a[4]}?`,qw:s=>`Who is ${s}?`},intro:`${n} persons (${lst(n)}) are compared by ${a[4]}. No two are equal.`}},
+circ:(d,l,R)=>{const n=d==0?6:d==1?(l>10?8:6):8,m=d==0?0:d==1?2:n/2,o=shuf(R,rg(n)).slice(0,m);return{k:'ring',n,it:LET.slice(0,n),out:i=>o.includes(i),intro:`${n} persons (${lst(n)}) sit at equal distances around a circular table. ${m?o.sort((a,b)=>a-b).map(i=>LET[i]).join(', ')+' face outside; the rest face the centre.':'All face the centre.'}`}},
+sq:d=>({k:'ring',n:8,cor:1,it:LET,out:(i,p)=>d>0&&p%2==1,intro:`8 persons (P to W) sit around a square table, four at the corners and four at the middle of the sides. ${d>0?'Those at the corners face the centre; those at the middle of the sides face outside.':'All face the centre.'}`}),
+hex:(d,l,R)=>{const tri=l%2==1,m=d==0?0:d==1?2:3,o=shuf(R,rg(6)).slice(0,m);return tri?{k:'ring',n:6,cor:1,it:LET.slice(0,6),out:(i,p)=>d>0&&p%2==1,intro:`6 persons (P to U) sit around a triangular table, three at the corners and three at the middle of the sides. ${d>0?'Those at the corners face the centre; those at the middle of the sides face outside.':'All face the centre.'}`}:{k:'ring',n:6,it:LET.slice(0,6),out:i=>o.includes(i),intro:`6 persons (P to U) sit at the six corners of a hexagonal table. ${m?o.sort((a,b)=>a-b).map(i=>LET[i]).join(', ')+' face outside; the rest face the centre.':'All face the centre.'}`}},
+tab:(d,l,R)=>{const n=d==2||l>10?5:4,ci=shuf(R,CITY).slice(0,n),jb=shuf(R,JOB).slice(0,n);return{k:'tab',n,it:LET.slice(0,n),ci,jb,intro:`${n} friends (${lst(n)}) live in different cities (${ci.join(', ')}) and have different professions (${jb.join(', ')}).`}}};
+/* clue makers: each returns {t:text, f:test}; test(P) must be true for the hidden solution */
+function lineClue(s,sol,R,d){const{n,it,v,vals,sl}=s,T=['gt','im','end','at','bet','gt','im'];if(d>0)T.push('gap','adj',...(v.par?['par']:[]));if(d>1)T.push('nadj','gap','bet');if(vals)T.push('num','num');
+for(let q=0;q<80;q++){const t=rnd(R,T),[a,b,c]=shuf(R,rg(n)),A=it[a],B=it[b],C=it[c],fl=R()<.5;let o;
+if(t=='gt')o=fl?{t:`${A} ${v.vb} ${v.lo} ${B}`,f:P=>P[a]<P[b]}:{t:`${A} ${v.vb} ${v.hi} ${B}`,f:P=>P[a]>P[b]};
+if(t=='im')o=fl?{t:`${A} ${v.vb} ${v.il} ${B}`,f:P=>P[a]==P[b]-1}:{t:`${A} ${v.vb} ${v.ih} ${B}`,f:P=>P[a]==P[b]+1};
+if(t=='end')o=fl?{t:`${A} ${v.vb} ${v.top}`,f:P=>P[a]==n-1}:{t:`${A} ${v.vb} ${v.bot}`,f:P=>P[a]==0};
+if(t=='at')o={t:`${A} ${v.at(sl(sol[a]))}`,f:P=>P[a]==sol[a]};
+if(t=='bet')o={t:`${A} ${v.vb} between ${B} and ${C}`,f:P=>(P[a]-P[b])*(P[a]-P[c])<0};
+if(t=='gap'){const k=Math.abs(sol[a]-sol[b])-1;if(k>0)o={t:`The number of ${v.unit} between ${A} and ${B} is ${k}`,f:P=>Math.abs(P[a]-P[b])-1==k}}
+if(t=='adj')o={t:`${A} and ${B} are adjacent to each other`,f:P=>Math.abs(P[a]-P[b])==1};
+if(t=='nadj')o={t:`${A} and ${B} are not adjacent to each other`,f:P=>Math.abs(P[a]-P[b])>1};
+if(t=='par')o={t:`${A} ${v.par(sol[a]%2==0)}`,f:P=>P[a]%2==sol[a]%2};
+if(t=='num'){const k=vals[sol[b]]-vals[sol[a]];if(k>0)o={t:`${A} is ${k} years older than ${B}`,f:P=>vals[P[b]]-vals[P[a]]==k}}
+if(o&&o.f(sol))return o}}
+function ringFx(s){const{n,out}=s,fl=(P,x)=>out(x,P[x])?-1:1;return{fl,lp:(P,x)=>(P[x]+fl(P,x)+n)%n,rp:(P,x)=>(P[x]-fl(P,x)+n)%n}}
+function ringClue(s,sol,R,d){const{n,it}=s,{fl,lp,rp}=ringFx(s),cd=(x,y)=>{const t=Math.abs(x-y);return Math.min(t,n-t)},T=['L','R','opp','L','R'];if(s.cor)T.push('cor');if(d>0)T.push('L2','R2','adj');if(d>1)T.push('bet','nadj','L2','R2');
+for(let q=0;q<80;q++){const t=rnd(R,T),[a,b,c]=shuf(R,rg(n)),A=it[a],B=it[b],C=it[c];let o;
+if(t=='L')o={t:`${A} sits to the immediate left of ${B}`,f:P=>P[a]==lp(P,b)};
+if(t=='R')o={t:`${A} sits to the immediate right of ${B}`,f:P=>P[a]==rp(P,b)};
+if(t=='L2')o={t:`${A} sits second to the left of ${B}`,f:P=>P[a]==(P[b]+2*fl(P,b)+2*n)%n};
+if(t=='R2')o={t:`${A} sits second to the right of ${B}`,f:P=>P[a]==(P[b]-2*fl(P,b)+2*n)%n};
+if(t=='opp')o={t:`${A} sits opposite ${B}`,f:P=>P[a]==(P[b]+n/2)%n};
+if(t=='adj')o={t:`${A} and ${B} sit adjacent to each other`,f:P=>cd(P[a],P[b])==1};
+if(t=='nadj')o={t:`${A} does not sit next to ${B}`,f:P=>cd(P[a],P[b])>1};
+if(t=='bet')o={t:`${A} sits between ${B} and ${C}`,f:P=>cd(P[a],P[b])==1&&cd(P[a],P[c])==1};
+if(t=='cor'){const k=sol[a]%2==0;o={t:`${A} sits at ${k?'a corner':'the middle of a side'}`,f:P=>(P[a]%2==0)==k}}
+if(o&&o.f(sol))return o}}
+function tabClue(s,sol,R,d){const{n,it,ci,jb}=s,T=['pc','pj','jc','npc','pc','jc'];if(d>0)T.push('njc','npj');if(d>1)T.push('ej','njc','npc');
+for(let q=0;q<80;q++){const t=rnd(R,T),[a,b]=shuf(R,rg(n)),c=Math.floor(R()*n),j=Math.floor(R()*n),A=it[a],B=it[b],C=ci[c],J=jb[j],cj=P=>P[0][P[1].indexOf(j)];let o;
+if(t=='pc')o={t:`${A} lives in ${C}`,f:P=>P[0][a]==c};
+if(t=='pj')o={t:`The profession of ${A} is ${J}`,f:P=>P[1][a]==j};
+if(t=='jc')o={t:`The ${J} lives in ${C}`,f:P=>cj(P)==c};
+if(t=='npc')o={t:`${A} does not live in ${C}`,f:P=>P[0][a]!=c};
+if(t=='njc')o={t:`The ${J} does not live in ${C}`,f:P=>cj(P)!=c};
+if(t=='npj')o={t:`The profession of ${A} is not ${J}`,f:P=>P[1][a]!=j};
+if(t=='ej')o={t:`Either ${A} or ${B} lives in ${C}`,f:P=>P[0][a]==c||P[0][b]==c};
+if(o&&o.f(sol))return o}}
+function lineQ(s,sol,R){const{n,it,v,sl}=s,ql=s.ql||sl,at=p=>it[sol.indexOf(p)],[a]=shuf(R,rg(n)),k=Math.floor(R()*n),x=rnd(R,rg(n).filter(i=>sol[i]<n-1));
+return[{q:v.qw(sl(k)),a:at(k),pool:it},{q:v.qa(it[a]),a:ql(sol[a]),pool:rg(n).map(ql)},{q:`${v.wh||'Who'} ${v.vb} ${v.ih} ${it[x]}?`,a:at(sol[x]+1),pool:it}]}
+function ringQ(s,sol,R){const{n,it}=s,{fl,lp,rp}=ringFx(s),at=p=>it[sol.indexOf(p)];
+const K=[[a=>at(lp(sol,a)),A=>`Who sits to the immediate left of ${A}?`],[a=>at(rp(sol,a)),A=>`Who sits to the immediate right of ${A}?`],[a=>at((sol[a]+n/2)%n),A=>`Who sits opposite ${A}?`],[a=>at((sol[a]+2*fl(sol,a)+2*n)%n),A=>`Who sits second to the left of ${A}?`],[a=>at((sol[a]-2*fl(sol,a)+2*n)%n),A=>`Who sits second to the right of ${A}?`]],P=shuf(R,rg(n));
+return shuf(R,K).slice(0,3).map((k,i)=>({q:k[1](it[P[i]]),a:k[0](P[i]),pool:it}))}
+function tabQ(s,sol,R){const{n,it,ci,jb}=s,[a,b]=shuf(R,rg(n)),c=Math.floor(R()*n),j=Math.floor(R()*n);
+return shuf(R,[{q:`Who is the ${jb[j]}?`,a:it[sol[1].indexOf(j)],pool:it},{q:`Which city does ${it[a]} live in?`,a:ci[sol[0][a]],pool:ci},{q:`Who lives in ${ci[c]}?`,a:it[sol[0].indexOf(c)],pool:it},{q:`What is the profession of ${it[b]}?`,a:jb[sol[1][b]],pool:jb},{q:`In which city does the ${jb[j]} live?`,a:ci[sol[0][sol[1].indexOf(j)]],pool:ci}]).slice(0,3)}
+function build(g,d,l,att){for(let tr=0;tr<6;tr++){const R=rng(`${g.id}${d}${l}${att}${tr}`),s=SP[g.id](d,l,R);
+let all=s.k=='tab'?cart(s.n):perms(s.n);if(s.k=='ring')all=all.filter(P=>P[0]<(s.cor?2:1));
+const sol=rnd(R,all),ck={line:lineClue,ring:ringClue,tab:tabClue}[s.k],sm=[9,6,3][d];let cand=all,cl=[];
+for(let i=0;i<40&&cand.length>1;i++){let best=null;for(let j=0;j<sm;j++){const c=ck(s,sol,R,d);if(!c)continue;const nc=cand.filter(c.f);if(nc.length<cand.length&&(!best||nc.length<best.nc.length))best={c,nc}}if(best){cand=best.nc;cl.push(best.c.t)}}
+if(cand.length==1){const qs=({line:lineQ,ring:ringQ,tab:tabQ})[s.k](s,sol,R).map(q=>{const w=shuf(R,[...new Set(q.pool)].filter(x=>x!=q.a)).slice(0,4);return{q:q.q,a:q.a,o:shuf(R,[q.a,...w])}});return{s,sol,cl,qs}}}}
+/* ---------- ui ---------- */
+let S={v:'home'},tmr=0;
+const key=(g,d,l)=>`${g}:${d}:${l}`,stars=n=>'★'.repeat(n)+'☆'.repeat(3-n),total=()=>Object.values(prog).reduce((a,b)=>a+b,0);
+const unlocked=l=>l==1||(prog[key(S.g.id,S.d,l-1)]||0)>=1;
+function home(){clearInterval(tmr);app.innerHTML=`<div class="top"><div class="brand hd"><span class="mark">${ic('ring')}</span>Reasoning Desk</div><div class="pill">★ ${total()}</div></div>
+<p class="lead">Bank exam logic puzzles. Pick a topic to begin.</p>${CATS.map((c,ci)=>`<h2>${c[0]}</h2><div class="grid">${GAMES.filter(g=>g.c==ci).map(g=>`<button class="tile" style="--c:${c[1]}" data-a="g" data-g="${g.id}"><span class="ico">${ic(g.i)}</span><span class="tt">${g.n}</span><span class="ss">${g.s}</span><span class="pg">${Object.keys(prog).filter(k=>k.startsWith(g.id+':')&&prog[k]>0).length}/60</span></button>`).join('')}</div>`).join('')}`}
+function levels(){clearInterval(tmr);const g=S.g,c=CATS[g.c][1];app.innerHTML=`<div class="top"><button class="ib" data-a="home" aria-label="Home">${ic('back')}</button><div class="hd t">${g.n}</div><div class="pill">★ ${total()}</div></div>
+<div class="seg">${DN.map((n,i)=>`<button data-a="d" data-i="${i}" class="${i==S.d?'on':''}">${n}</button>`).join('')}</div><p class="lead">${DS[S.d]}</p>
+<div class="lvs" style="--c:${c}">${rg(20).map(i=>{const l=i+1,u=unlocked(l),p=prog[key(g.id,S.d,l)];return`<button class="lv" data-a="pl" data-l="${l}" ${u?'':'disabled'}>${u?l:ic('lock')}<small>${p==null?'':stars(p)}</small></button>`}).join('')}</div>`}
+function play(){const{pz,g}=S,c=CATS[g.c][1],s=pz.s;S.ans=[];S.off=new Set;S.hints=2;S.done=false;S.pad=[];S.t0=Date.now();
+const pad=s.k=='tab'?'':`<div class="card" style="--c:${c}"><div class="lab">Scratch pad${s.k=='ring'?' (seats run clockwise)':''}. Tap a seat to place a person.</div><div class="pad">${rg(s.n).map(i=>`<button class="chip" data-a="pd" data-i="${i}"><small>${s.k=='ring'?'Seat '+(i+1):s.sl(i)}</small><b></b></button>`).join('')}</div></div>`;
+app.innerHTML=`<div class="top"><button class="ib" data-a="lv" aria-label="Back">${ic('back')}</button><div class="hd t">${g.n}</div><div class="pill" id="tm">0:00</div></div>
+<p class="lead">${DN[S.d]}, level ${S.l}</p>
+<div class="card">${s.intro}</div><div class="card" style="--c:${c}"><div class="lab">Clues</div>${pz.cl.map(x=>`<div class="clue">${x}</div>`).join('')}</div>${pad}
+${pz.qs.map((q,i)=>`<div class="card"><div class="lab">Question ${i+1}</div><p class="q">${q.q}</p>${q.o.map((o,j)=>`<button class="opt" data-a="o" data-q="${i}" data-j="${j}">${o}</button>`).join('')}</div>`).join('')}
+<div class="row"><button class="btn ghost" data-a="h" id="hb">Hint (2)</button><button class="btn" data-a="chk" id="ck" disabled>Check answers</button></div><div id="res"></div>`;
+clearInterval(tmr);tmr=setInterval(()=>{if(S.done)return;const t=Math.floor((Date.now()-S.t0)/1e3);const e=$('#tm');if(e)e.textContent=Math.floor(t/60)+':'+String(t%60).padStart(2,'0')},1000)}
+function paint(){document.querySelectorAll('.opt').forEach(b=>{const i=+b.dataset.q,j=+b.dataset.j,q=S.pz.qs[i],sel=S.ans[i]==j;b.className='opt'+(S.done?(q.o[j]==q.a?' ok':sel?' no':' off'):sel?' sel':S.off.has(i+'-'+j)?' off':'')});$('#ck').disabled=S.done||S.pz.qs.some((q,i)=>S.ans[i]==null);$('#hb').textContent=`Hint (${S.hints})`}
+function start(att){S.att=att;S.pz=build(S.g,S.d,S.l,att);S.v='play';play()}
+function solText(){const{s,sol}=S.pz;if(s.k=='tab')return s.it.map((p,i)=>`${p}: ${s.ci[sol[0][i]]}, ${s.jb[sol[1][i]]}`).join('<br>');return rg(s.n).map(p=>`${s.k=='ring'?'Seat '+(p+1):s.sl(p)}: ${s.it[sol.indexOf(p)]}`).join('<br>')+(s.k=='ring'?'<br>(Rotations of this arrangement are equivalent.)':'')}
+function check(){S.done=true;clearInterval(tmr);const cor=S.pz.qs.filter((q,i)=>q.o[S.ans[i]]==q.a).length,k=key(S.g.id,S.d,S.l);prog[k]=Math.max(prog[k]||0,cor);save();paint();
+const t=Math.floor((Date.now()-S.t0)/1e3),msg=['Not this time','Review and retry','Good work','All correct'][cor];
+$('#res').innerHTML=`<div class="card"><div class="hd t" style="text-align:left">${msg}</div><div class="stars">${stars(cor)}</div><p class="lead">${cor} of 3 correct in ${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}</p><details><summary>Show the full solution</summary><p style="margin-top:6px">${solText()}</p></details><div class="row">${cor>0&&S.l<20?'<button class="btn" data-a="nx">Next level</button>':''}<button class="btn ghost" data-a="rt">New version</button></div></div>`;$('#res').scrollIntoView({behavior:'smooth'})}
+app.onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+if(a=='home'){S={v:'home'};home()}
+else if(a=='g'){S={v:'lv',g:GAMES.find(x=>x.id==b.dataset.g),d:S.d||0};levels()}
+else if(a=='d'){S.d=+b.dataset.i;levels()}
+else if(a=='lv')levels();
+else if(a=='pl'){S.l=+b.dataset.l;start(0)}
+else if(a=='nx'){S.l++;start(0)}
+else if(a=='rt')start((S.att||0)+1);
+else if(a=='o'&&!S.done){S.ans[+b.dataset.q]=+b.dataset.j;paint()}
+else if(a=='h'&&!S.done&&S.hints>0){const i=S.pz.qs.findIndex((q,i)=>S.ans[i]==null);if(i<0)return;const q=S.pz.qs[i],w=shuf(Math.random,q.o.map((o,j)=>j).filter(j=>q.o[j]!=q.a&&!S.off.has(i+'-'+j)));w.slice(0,Math.min(2,w.length-1)).forEach(j=>S.off.add(i+'-'+j));S.hints--;paint()}
+else if(a=='chk')check();
+else if(a=='pd'){const s=S.pz.s,i=+b.dataset.i,n=s.it.length;S.pad[i]=((S.pad[i]??-1)+2)%(n+1)-1;b.querySelector('b').textContent=S.pad[i]<0?'':s.it[S.pad[i]]}}
+home();
+</script></body></html>
